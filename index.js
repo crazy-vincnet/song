@@ -36,7 +36,6 @@ app.post('/upload', uploadFiles.single('img'), async (req, res) => {
   const thumbnail = appDir + `/song/files/img/${name}.png`;
   await child_process.spawn('python3', ['./python/index.py', thumbnail, name]);
   const items = appDir + `/song/files/3d/${name}.glb`;
-  res.status(200).send('upload S');
   request.post(
     {
       url: 'https://api.v2.dev.twin.world/item/upload',
@@ -54,6 +53,7 @@ app.post('/upload', uploadFiles.single('img'), async (req, res) => {
       console.log(body);
     }
   );
+  res.status(200).send('upload S');
 });
 
 server.listen(port, () => {
