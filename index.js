@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 
 const server = createServer(app);
-const port = 3500;
+const port = 3300;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -33,19 +33,19 @@ app.get('/', (req, res) => {
 
 app.post('/upload', uploadFiles.single('img'), async (req, res) => {
   const name = req.body.name;
-  const thumbnail = appDir + `/song/files/${name}.png`;
-  await child_process.spawn('python3', ['DL.py', thumbnail, name]);
-  const items = appDir + `/song/python/${name}.glb`;
-  //curl
+  const thumbnail = appDir + `/song/files/img/${name}.png`;
+  await child_process.spawn('python3', ['./python/index.py', thumbnail, name]);
+  const items = appDir + `/song/files/3d/${name}.glb`;
+  res.status(200).send('upload S');
   request.post(
     {
       url: 'https://api.v2.dev.twin.world/item/upload',
       headers: {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMUdTQTc3Mkc5RkhBTVRDTkU3NzRTMjNZMCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc2NTUyMzY4LCJleHAiOjE2NzY1NTU5Njh9.E3fJlavZV8sWk9Q3E_8QkW0aPXmzOCXltMXmzXwUbkg',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMUdTQTc3Mkc5RkhBTVRDTkU3NzRTMjNZMCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjc2NTU4NDM4LCJleHAiOjE2NzY1NjIwMzh9.nuO0N7tiENSqtxxuLG4c2bSpOTHZvBg0PxIfe2z3aGI',
       },
       formData: {
-        itemName: 'test',
+        itemName: name,
         thumbnail: fs.createReadStream(thumbnail),
         item: fs.createReadStream(items),
       },
@@ -54,7 +54,6 @@ app.post('/upload', uploadFiles.single('img'), async (req, res) => {
       console.log(body);
     }
   );
-  res.status(200).send('upload S');
 });
 
 server.listen(port, () => {
