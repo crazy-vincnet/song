@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 app.post('/upload', uploadFiles.single('img'), async (req, res) => {
   const name = req.body.name;
   const thumbnail = appDir + `/song/files/img/${name}.png`;
-  await child_process.spawn('python3', ['./python/index.py', thumbnail, name]);
+  await child_process.spawn('python3', ['./index.py', thumbnail, name]);
   const items = appDir + `/song/files/3d/${name}.glb`;
   request.post(
     {
